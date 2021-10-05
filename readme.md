@@ -1,5 +1,5 @@
 # PHP Discord GIT Notifications
-##### *Currently compatible with BitBucket and Gitlab*
+##### *Currently compatible with Github, BitBucket and Gitlab*
 
 Send a Discord message on every push, pull request created or approved on your Git repository.
 
@@ -10,6 +10,7 @@ Send a Discord message on every push, pull request created or approved on your G
 - Setup a channel representing a customer on your Discord server and receive messages on every action.
 - Set a *secure token* for your webhooks (only for GitLab repositories).
 - Setup your custom configuration (bot name, color, avatar or message) and grab the attention of your colleagues!
+- Declare the webhooks of **all** your repositories at the same time, even if they are from different Git providers.
 
 #### Installation
 
@@ -51,6 +52,8 @@ After that you can proceed declaring your **webhooks**:
 
 ```php
 $repository->addWebhooks([
+    // Example for GitHub
+    '{github_hook_uuid}' => 'https://discord.com/api/webhooks/{channel_id}/{webhook_id}',
     // Example for Bitbucket
     '{bitbucket_webhook_uuid}' => 'https://discord.com/api/webhooks/{channel_id}/{webhook_id}',
     // Example for Gitlab
@@ -71,12 +74,20 @@ $repository = $repository->parseRequest();
 $repository->sendMessage();
 ```
 
+#### How to create and/or retrieve your Github Webhook UUID
+1. Login into your **Github** account.
+2. Search and enter in your **Repository**.
+3. Click on *Settings* and then on *Webhooks* in the left sidebar.
+4. Create your webhook if you haven't already did by entering the complete **url** of this route and making sure that *Content type* is set to **application/json** and choose **Let me select individual events** if interested (only **Pushes** and **Pull requests** will be considered).
+5. After that, click on **edit** and retrieve the Github webhook uuid from the url path.
+
+
 #### How to create and/or retrieve your Bitbucket Webhook UUID
 1. Login into your **Bitbucket** account.
 2. Search and enter in your **Repository**.
 3. Click on *Repository settings* and then on *Webhooks* under *Workflow* subcategory.
-4. Create your webhook if you haven't already did entering the complete **url** of this route and making sure that **Push** (under repository), **Created** (under pull request) and **Approved** (under pull request) checkboxes are **enabled**.
-5. After that, click on **edit** or **view requests** (if your are not on those sections yet) call to actions and retrieve the bitbucket webhook uuid from the url path (make sure to not copy braces characters **%7B** and **%7D** which can limit uuid string)
+4. Create your webhook if you haven't already did by entering the complete **url** of this route and making sure that **Push** (under repository), **Created** (under pull request) and **Approved** (under pull request) checkboxes are **enabled**.
+5. After that, click on **edit** or **view requests** (if your are not on those sections yet) call to actions and retrieve the bitbucket webhook uuid from the url path (make sure to not copy braces characters **%7B** and **%7D** which can limit uuid string).
 
 #### How to create and/or retrieve your Gitlab Project ID
 1. Login into your **Gitlab** account.
@@ -102,4 +113,5 @@ $repository->sendMessage();
 
 Apache License 2.0
 
-**There's no place like 127.0.0.1!**
+
+# **There's no place like 127.0.0.1!**

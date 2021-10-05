@@ -4,6 +4,7 @@ namespace ArsDigitalia;
 
 use Throwable;
 use Exception;
+use ArsDigitalia\ActionType;
 use ArsDigitalia\Payload;
 use ArsDigitalia\DiscordMessage;
 use ArsDigitalia\Exceptions\NotProvidedException;
@@ -45,13 +46,13 @@ class Bitbucket extends Repository {
         $this->checkEvent();
         switch ($this->headers['X-Event-Key']) {
             case 'repo:push':
-                $this->action_type = ActionType::PUSH();
+                $this->actionType = ActionType::PUSH();
                 break;
             case 'pullrequest:created':
-                $this->action_type = ActionType::PULL_REQUEST_CREATED();
+                $this->actionType = ActionType::PULL_REQUEST_CREATED();
                 break;
             case 'pullrequest:approved':
-                $this->action_type = ActionType::PULL_REQUEST_APPROVED();
+                $this->actionType = ActionType::PULL_REQUEST_APPROVED();
                 break;
             default:
                 throw new NotProvidedException("Unhandled case for Bitbucket repository: open a Github issue for particular requests");
@@ -59,7 +60,7 @@ class Bitbucket extends Repository {
     }
 
     function getFields() : array {
-        switch ($this->action_type) {
+        switch ($this->actionType) {
             case 'PUSH':
                 return $this->getPushMessage();
             case 'PULL_REQUEST_CREATED':
@@ -76,9 +77,10 @@ class Bitbucket extends Repository {
         $repository = $this->payload['repository'];
         $change = $push['changes'][0];
         $commit = $change['commits'][0];
+        $actionType = $this->actionType;
         $payload = new Payload(
             'Successful execution',
-            'Push',
+            ActionType::PUSH,
             $commit['author']['raw'],
             substr($commit['hash'], 0, 7),
 		    $commit['message'],
@@ -94,9 +96,10 @@ class Bitbucket extends Repository {
         $destination = $pull_request['destination'];
         $commit = $destination['commit'];
         $repository = $this->payload['repository'];
+        $actionType = $this->actionType;
         $payload = new Payload(
             'Successful execution',
-            'Pull request created',
+            ActionType::PULL_REQUEST_CREATED,
             $pull_request['author']['display_name'],
             substr($commit['hash'], 0, 7),
             $pull_request['title'],
@@ -113,9 +116,10 @@ class Bitbucket extends Repository {
         $destination = $pull_request['destination'];
         $commit = $destination['commit'];
         $repository = $this->payload['repository'];
+        $actionType = $this->actionType;
         $payload = new Payload(
             'Successful execution',
-            'Pull request appoved',
+            ActionType::PULL_REQUEST_APPROVED,
             $approval['user']['display_name'],
             substr($commit['hash'], 0, 7),
             $pull_request['title'],

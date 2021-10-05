@@ -16,7 +16,7 @@ class Repository {
     var $headers = null;
     var $payload = null;
     var $uuid = null;
-    var $action_type = null;
+    var $actionType = null;
     var $config = null;
     var $message = null;
     var $providerName = null;
@@ -39,6 +39,8 @@ class Repository {
             $this->providerName = RepositoryProvider::BITBUCKET;
         } else if(array_key_exists('X-Gitlab-Event', $this->headers)) {
             $this->providerName = RepositoryProvider::GITLAB;
+        } else if(array_key_exists('X-GitHub-Event', $this->headers)) {
+            $this->providerName = RepositoryProvider::GITHUB;
         } else if(is_null($this->providerName)) {
             throw new NotProvidedException("Repository provider not found: make sure you are doing the right process.");
         }

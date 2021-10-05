@@ -53,13 +53,13 @@ class Gitlab extends Repository {
         $this->checkEvent();
         switch ($this->headers['X-Gitlab-Event']) {
             case 'Push Hook':
-                $this->action_type = ActionType::PUSH();
+                $this->actionType = ActionType::PUSH();
                 break;
             // case 'pullrequest:created':
-            //     $this->action_type = ActionType::PULL_REQUEST_CREATED();
+            //     $this->actionType = ActionType::PULL_REQUEST_CREATED();
             //     break;
             // case 'pullrequest:approved':
-            //     $this->action_type = ActionType::PULL_REQUEST_APPROVED();
+            //     $this->actionType = ActionType::PULL_REQUEST_APPROVED();
             //     break;
             default:
                 throw new NotProvidedException("Unhandled case for repository: open a Github issue for particular requests");
@@ -67,7 +67,7 @@ class Gitlab extends Repository {
     }
 
     public function getFields() : array {
-        switch ($this->action_type) {
+        switch ($this->actionType) {
             case 'PUSH':
                 return $this->getPushMessage();
             // case 'PULL_REQUEST_CREATED':
