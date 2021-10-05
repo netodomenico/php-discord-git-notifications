@@ -18,7 +18,7 @@ Send a Discord message on every push, pull request created or approved on your G
 Install the package and initialize your repository entries.
 
 ```sh
-composer install netodomenico/php-discord-git-notifications
+composer require netodomenico/php-discord-git-notifications
 ```
 
 #### Configuration

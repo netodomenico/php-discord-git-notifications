@@ -24,5 +24,7 @@
         "psr-4": {
             "ArsDigitalia\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
