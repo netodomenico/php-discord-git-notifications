@@ -55,12 +55,15 @@ class Gitlab extends Repository {
             case 'Push Hook':
                 $this->actionType = ActionType::PUSH();
                 break;
-            // case 'pullrequest:created':
-            //     $this->actionType = ActionType::PULL_REQUEST_CREATED();
-            //     break;
-            // case 'pullrequest:approved':
-            //     $this->actionType = ActionType::PULL_REQUEST_APPROVED();
-            //     break;
+            case 'Merge Request Hook':
+                if($this->payload['object_attributes']['action'] == 'open') {
+                    $this->actionType = ActionType::PULL_REQUEST_CREATED();
+                    break;
+                }
+                if($this->payload['object_attributes']['action'] == 'approved') {
+                    $this->actionType = ActionType::PULL_REQUEST_APPROVED();
+                    break;
+                }
             default:
                 throw new NotProvidedException("Unhandled case for repository: open a Github issue for particular requests");
         }
@@ -70,10 +73,10 @@ class Gitlab extends Repository {
         switch ($this->actionType) {
             case 'PUSH':
                 return $this->getPushMessage();
-            // case 'PULL_REQUEST_CREATED':
-            //     return $this->getPullrequestCreatedMessage();
-            // case 'PULL_REQUEST_UPDATED':
-            //     return $this->getPullrequestApprovedMessage();
+            case 'PULL_REQUEST_CREATED':
+                return $this->getPullrequestMessage(ActionType::PULL_REQUEST_CREATED);
+            case 'PULL_REQUEST_APPROVED':
+                return $this->getPullrequestMessage(ActionType::PULL_REQUEST_APPROVED);
             default:
                 throw new NotProvidedException("Unhandled case for repository: open a Github issue for particular requests");
         }
@@ -81,17 +84,35 @@ class Gitlab extends Repository {
 
     function getPushMessage() : array {
         $project = $this->payload['project'];
-        $repository = $this->payload['repository'];
         $commit = $this->payload['commits'][0];
+        $author = $commit['author'];
         $payload = new Payload(
             'Successful execution',
             'Push',
-            $commit['author']['name'] . ' <' . $commit['author']['email'] . '>',
+            $author['name'] . ' <' . $author['email'] . '>',
             substr($this->payload['checkout_sha'], 0, 7),
             $commit['message'],
             $project['namespace'] . '/' . $project['name'],
             $this->payload['ref'],
             $project['web_url']
+        );
+        return $payload->toArray();
+    }
+
+    function getPullrequestMessage($actionType) : array {
+        $project = $this->payload['project'];
+        $user = $this->payload['user'];
+        $attributes = $this->payload['object_attributes'];
+        $commit = $attributes['last_commit'];
+        $payload = new Payload(
+            'Successful execution',
+            $actionType,
+            $user['name'] . ' <' . $user['email'] . '>',
+            substr($commit['id'], 0, 7),
+            $commit['message'],
+            $project['namespace'] . '/' . $project['name'],
+            $attributes['target_branch'],
+            $commit['url']
         );
         return $payload->toArray();
     }

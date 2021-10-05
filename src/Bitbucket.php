@@ -64,9 +64,9 @@ class Bitbucket extends Repository {
             case 'PUSH':
                 return $this->getPushMessage();
             case 'PULL_REQUEST_CREATED':
-                return $this->getPullrequestCreatedMessage();
-            case 'PULL_REQUEST_UPDATED':
-                return $this->getPullrequestApprovedMessage();
+                return $this->getPullrequestMessage(ActionType::PULL_REQUEST_CREATED);
+            case 'PULL_REQUEST_APPROVED':
+                return $this->getPullrequestMessage(ActionType::PULL_REQUEST_APPROVED);
             default:
                 throw new NotProvidedException("Unhandled case for Bitbucket repository: open a Github issue for particular requests");
         }
@@ -77,7 +77,6 @@ class Bitbucket extends Repository {
         $repository = $this->payload['repository'];
         $change = $push['changes'][0];
         $commit = $change['commits'][0];
-        $actionType = $this->actionType;
         $payload = new Payload(
             'Successful execution',
             ActionType::PUSH,
@@ -91,15 +90,14 @@ class Bitbucket extends Repository {
         return $payload->toArray();
     }
 
-    function getPullrequestCreatedMessage() : array {
+    function getPullrequestMessage($actionType) : array {
         $pull_request = $this->payload['pullrequest'];
         $destination = $pull_request['destination'];
         $commit = $destination['commit'];
         $repository = $this->payload['repository'];
-        $actionType = $this->actionType;
         $payload = new Payload(
             'Successful execution',
-            ActionType::PULL_REQUEST_CREATED,
+            $actionType,
             $pull_request['author']['display_name'],
             substr($commit['hash'], 0, 7),
             $pull_request['title'],
@@ -109,26 +107,5 @@ class Bitbucket extends Repository {
         );
         return $payload->toArray();
     }
-
-    function getPullrequestApprovedMessage() : array {
-        $approval = $this->payload['approval'];
-        $pull_request = $this->payload['pullrequest'];
-        $destination = $pull_request['destination'];
-        $commit = $destination['commit'];
-        $repository = $this->payload['repository'];
-        $actionType = $this->actionType;
-        $payload = new Payload(
-            'Successful execution',
-            ActionType::PULL_REQUEST_APPROVED,
-            $approval['user']['display_name'],
-            substr($commit['hash'], 0, 7),
-            $pull_request['title'],
-            $repository['full_name'],
-            $destination['branch']['name'],
-            $pull_request['links']['html']['href']
-        );
-        return $payload->toArray();
-    }
-
 
 }

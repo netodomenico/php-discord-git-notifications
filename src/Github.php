@@ -48,12 +48,15 @@ class Github extends Repository {
             case 'push':
                 $this->actionType = ActionType::PUSH();
                 break;
-            // case 'pullrequest:created':
-            //     $this->actionType = ActionType::PULL_REQUEST_CREATED();
-            //     break;
-            // case 'pullrequest:approved':
-            //     $this->actionType = ActionType::PULL_REQUEST_APPROVED();
-            //     break;
+            case 'pull_request':
+                if($this->payload['action'] == 'opened') {
+                    $this->actionType = ActionType::PULL_REQUEST_CREATED();
+                    break;
+                }
+                if($this->payload['action'] == 'closed') {
+                    $this->actionType = ActionType::PULL_REQUEST_APPROVED();
+                    break;
+                }
             default:
                 throw new NotProvidedException("Unhandled case for Github repository: open a Github issue for particular requests");
         }
@@ -63,10 +66,10 @@ class Github extends Repository {
         switch ($this->actionType) {
             case 'PUSH':
                 return $this->getPushMessage();
-            // case 'PULL_REQUEST_CREATED':
-            //     return $this->getPullrequestCreatedMessage();
-            // case 'PULL_REQUEST_UPDATED':
-            //     return $this->getPullrequestApprovedMessage();
+            case 'PULL_REQUEST_CREATED':
+                return $this->getPullrequestMessage(ActionType::PULL_REQUEST_CREATED);
+            case 'PULL_REQUEST_APPROVED':
+                return $this->getPullrequestMessage(ActionType::PULL_REQUEST_APPROVED);
             default:
                 throw new NotProvidedException("Unhandled case for Github repository: open a Github issue for particular requests");
         }
@@ -76,7 +79,6 @@ class Github extends Repository {
         $repository = $this->payload['repository'];
         $commit = $this->payload['commits'][0];
         $author = $commit['author'];
-        $actionType = $this->actionType;
         $payload = new Payload(
             'Successful execution',
             ActionType::PUSH,
@@ -86,6 +88,23 @@ class Github extends Repository {
             $repository['full_name'],
             $this->payload['ref'],
             $commit['url']
+        );
+        return $payload->toArray();
+    }
+
+    function getPullrequestMessage($actionType) : array {
+        $repository = $this->payload['repository'];
+        $pull_request = $this->payload['pull_request'];
+        $sender = $this->payload['sender'];
+        $payload = new Payload(
+            'Successful execution',
+            $actionType,
+            $sender['login'],
+            substr($pull_request['head']['sha'], 0, 7),
+		    $pull_request['body'],
+            $repository['full_name'],
+            $pull_request['head']['ref'],
+            $pull_request['html_url']
         );
         return $payload->toArray();
     }
