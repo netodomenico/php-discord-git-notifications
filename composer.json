@@ -4,7 +4,7 @@
     "description": "Send a Discord message on every push, pull request created or approved on your Git repository.",
     "keywords": ["discord", "git", "push", "pull", "pullrequest", "bitbucket", "gitlab", "php"],
     "homepage": "https://www.arsdigitalia.net",
-    "license": "Apache License 2.0",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Domenico Neto",
