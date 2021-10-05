@@ -1,0 +1,28 @@
+{
+    "name": "netodomenico/php-discord-git-notifications",
+    "type": "library",
+    "description": "Send a Discord message on every push, pull request created or approved on your Git repository.",
+    "keywords": ["discord", "git", "push", "pull", "pullrequest", "bitbucket", "gitlab", "php"],
+    "homepage": "https://www.arsdigitalia.net",
+    "license": "Apache License 2.0",
+    "authors": [
+        {
+            "name": "Domenico Neto",
+            "email": "netodomenico@me.com",
+            "homepage": "https://www.netodomenico.com",
+            "role": "Software engineer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "autoload": {
+        "psr-4": {
+            "ArsDigitalia\\": "src/"
+        }
+    }
+}
