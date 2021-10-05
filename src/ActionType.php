@@ -6,6 +6,6 @@ class ActionType extends Enum {
 
     const PUSH = 'Push';
     const PULL_REQUEST_CREATED = 'Pull request (created)';
-    const PULL_REQUEST_UPDATED = 'Pull request (updated)';
+    const PULL_REQUEST_APPROVED = 'Pull request (approved)';
 
 }
