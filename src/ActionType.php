@@ -4,8 +4,8 @@ namespace ArsDigitalia;
 
 class ActionType extends Enum {
 
-    const PUSH = 0;
-    const PULL_REQUEST_CREATED = 1;
-    const PULL_REQUEST_UPDATED = 2;
+    const PUSH = 'Push';
+    const PULL_REQUEST_CREATED = 'Pull request (created)';
+    const PULL_REQUEST_UPDATED = 'Pull request (updated)';
 
 }

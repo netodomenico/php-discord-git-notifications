@@ -31,6 +31,11 @@ class DiscordMessage {
                             "inline" => false
                         ],
                         [
+                            "name" => "Activity type",
+                            "value" => $fields['type'],
+                            "inline" => false
+                        ],
+                        [
                             "name" => "Author",
                             "value" => $fields['author'],
                             "inline" => false
