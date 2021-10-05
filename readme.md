@@ -104,11 +104,6 @@ $repository->sendMessage();
 4. After that your can click on the "Create webhook" call to action, enter the required parameters and then copy the **Webhook URL**.
 
 
-#### TODO List:
-- Adding pull requests to the Gitlab instance
-- Fully integration with Github
-
-
 #### License
 
 Apache License 2.0
