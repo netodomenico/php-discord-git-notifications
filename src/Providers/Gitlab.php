@@ -1,10 +1,11 @@
 <?php
 
-namespace ArsDigitalia;
+namespace ArsDigitalia\Providers;
 
 use Throwable;
 use Exception;
 use ArsDigitalia\Payload;
+use ArsDigitalia\Repository;
 use ArsDigitalia\DiscordMessage;
 use ArsDigitalia\Exceptions\NotAuthorizedException;
 use ArsDigitalia\Exceptions\NotProvidedException;

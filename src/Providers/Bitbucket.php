@@ -1,11 +1,12 @@
 <?php
 
-namespace ArsDigitalia;
+namespace ArsDigitalia\Providers;
 
 use Throwable;
 use Exception;
-use ArsDigitalia\ActionType;
 use ArsDigitalia\Payload;
+use ArsDigitalia\Repository;
+use ArsDigitalia\ActionType;
 use ArsDigitalia\DiscordMessage;
 use ArsDigitalia\Exceptions\NotProvidedException;
 use ArsDigitalia\Exceptions\ParsingPayloadException;

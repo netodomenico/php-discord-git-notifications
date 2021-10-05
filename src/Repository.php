@@ -44,7 +44,7 @@ class Repository {
         } else if(is_null($this->providerName)) {
             throw new NotProvidedException("Repository provider not found: make sure you are doing the right process.");
         }
-        $object = $this->castAs('ArsDigitalia\\' . $this->providerName);
+        $object = $this->castAs('ArsDigitalia\\Providers\\' . $this->providerName);
         $object->parseRequest();
         return $object;
     }
