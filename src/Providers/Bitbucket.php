@@ -76,8 +76,8 @@ class Bitbucket extends Repository {
     function getPushMessage() : array {
         $push = $this->payload['push'];
         $repository = $this->payload['repository'];
-        $change = $push['changes'][0];
-        $commit = $change['commits'][0];
+        $change = end($push['changes']);
+        $commit = end($change['commits']);
         $payload = new Payload(
             'Successful execution',
             ActionType::PUSH,

@@ -78,7 +78,7 @@ class Github extends Repository {
 
     function getPushMessage() : array {
         $repository = $this->payload['repository'];
-        $commit = $this->payload['commits'][0];
+        $commit = end($this->payload['commits']);
         $author = $commit['author'];
         $payload = new Payload(
             'Successful execution',
