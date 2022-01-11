@@ -87,7 +87,7 @@ class Gitlab extends Repository {
     function getPushMessage() : array {
         $project = $this->payload['project'];
         $commit = end($this->payload['commits']);
-        $author = $this->payload['user_name'] . (filter_var($this->payload['user_email'], FILTER_VALIDATE_EMAIL) ? ' <' . $this->payload['user_email'] . '>' : '');
+        $author = $commit['author']['name'] . (filter_var($commit['author']['email'], FILTER_VALIDATE_EMAIL) ? ' <' . $commit['author']['email'] . '>' : '');
         $payload = new Payload(
             'Successful execution',
             'Push',
