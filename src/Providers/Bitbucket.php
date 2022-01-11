@@ -17,7 +17,7 @@ class Bitbucket extends Repository {
         parent::__construct();
     }
 
-    function parseRequest() : Bitbucket {
+    function parseRequest() : Repository {
         $this->setActionType();
         $this->checkHookUUID();
         $this->config->set('repository_name', 'Bitbucket');

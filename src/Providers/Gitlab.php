@@ -6,6 +6,7 @@ use Throwable;
 use Exception;
 use ArsDigitalia\Payload;
 use ArsDigitalia\Repository;
+use ArsDigitalia\ActionType;
 use ArsDigitalia\DiscordMessage;
 use ArsDigitalia\Exceptions\NotAuthorizedException;
 use ArsDigitalia\Exceptions\NotProvidedException;
@@ -17,7 +18,7 @@ class Gitlab extends Repository {
         parent::__construct();
     }
 
-    function parseRequest() : Gitlab {
+    function parseRequest() : Repository {
         $this->checkSecureToken();
         $this->setActionType();
         $this->config->set('repository_name', 'Gitlab');

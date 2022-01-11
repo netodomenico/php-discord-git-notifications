@@ -17,7 +17,7 @@ class Github extends Repository {
         parent::__construct();
     }
 
-    function parseRequest() : Github {
+    function parseRequest() : Repository {
         $this->setActionType();
         $this->checkHookUUID();
         $this->config->set('repository_name', 'Github');
