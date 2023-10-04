@@ -8,7 +8,7 @@ class RepositoryConfig {
 
     public function __construct(array $configs = []) {
         foreach ($configs as $key => $config) {
-            $this->set($key, $value);
+            $this->set($key, $config);
         }
     }
 

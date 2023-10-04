@@ -33,7 +33,7 @@ class Payload {
             'message' => $this->message,
             'project' => $this->project,
             'branch' => $this->branch,
-            'link' => $this->link
+            'link' => $this->link,
         ];
     }
 

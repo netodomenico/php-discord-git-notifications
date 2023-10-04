@@ -21,7 +21,7 @@ class Bitbucket extends Repository {
         $this->setActionType();
         $this->checkHookUUID();
         $this->config->set('repository_name', 'Bitbucket');
-        $this->config->set('repository_image', 'https://wac-cdn.atlassian.com/assets/img/favicons/bitbucket/apple-touch-icon.png');
+        $this->config->set('repository_image', 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png');
         try {
             $this->uuid = $this->headers['X-Hook-UUID'];
             $this->message = new DiscordMessage($this->getFields(), $this->config);

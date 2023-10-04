@@ -9,6 +9,13 @@ class DiscordMessage {
 
     public function __construct($fields, $config) {
         $this->config = $config;
+        if(str_contains($fields['type'], 'Issue')) {
+            $response = $this->getIssueFields($fields);
+        } else if(str_contains($fields['type'], 'Comment')) {
+            $response = $this->getCommentFields($fields);
+        } else {
+            $response = $this->getPushFields($fields);
+        }
         $this->response = [
             "content" => $this->config->get('bot_message', 'I\'m working on our git repository: checkout my updates!'),
             "username" => $this->config->get('bot_username', 'Ars Digitalia'),
@@ -24,44 +31,128 @@ class DiscordMessage {
                         "text" => $this->config->get('repository_name'),
                         "icon_url" => $this->config->get('repository_image'),
                     ],
-                    "fields" => [
-                        [
-                            "name" => "Status",
-                            "value" => $fields['status'],
-                            "inline" => false
-                        ],
-                        [
-                            "name" => "Activity type",
-                            "value" => $fields['type'],
-                            "inline" => false
-                        ],
-                        [
-                            "name" => "Author",
-                            "value" => $fields['author'],
-                            "inline" => false
-                        ],
-                        [
-                            "name" => "Commit",
-                            "value" => $fields['commit'],
-                            "inline" => false
-                        ],
-                        [
-                            "name" => "Message",
-                            "value" => $fields['message'],
-                            "inline" => false
-                        ],
-                        [
-                            "name" => "Project",
-                            "value" => $fields['project'],
-                            "inline" => false
-                        ],
-                        [
-                            "name" => "Branch",
-                            "value" => $fields['branch'],
-                            "inline" => false
-                        ]
-                    ]
-                ]
+                    "fields" => $response,
+                ],
+            ]
+        ];
+    }
+
+    function getPushFields($fields) {
+        return [
+            [
+                "name" => "Status",
+                "value" => $fields['status'],
+                "inline" => false
+            ],
+            [
+                "name" => "Activity type",
+                "value" => $fields['type'],
+                "inline" => false
+            ],
+            [
+                "name" => "Author",
+                "value" => $fields['author'],
+                "inline" => false
+            ],
+            [
+                "name" => "Commit",
+                "value" => $fields['commit'],
+                "inline" => false
+            ],
+            [
+                "name" => "Message",
+                "value" => $fields['message'],
+                "inline" => false
+            ],
+            [
+                "name" => "Project",
+                "value" => $fields['project'],
+                "inline" => false
+            ],
+            [
+                "name" => "Branch",
+                "value" => $fields['branch'],
+                "inline" => false
+            ]
+        ];
+    }
+
+    function getIssueFields($fields) {
+        return [
+            [
+                "name" => "Status",
+                "value" => $fields['status'],
+                "inline" => false
+            ],
+            [
+                "name" => "Activity type",
+                "value" => $fields['type'],
+                "inline" => false
+            ],
+            [
+                "name" => "Author",
+                "value" => $fields['author'],
+                "inline" => false
+            ],
+            [
+                "name" => "Title",
+                "value" => $fields['commit'],
+                "inline" => false
+            ],
+            [
+                "name" => "Description",
+                "value" => $fields['message'],
+                "inline" => false
+            ],
+            [
+                "name" => "Labels",
+                "value" => $fields['project'],
+                "inline" => false
+            ],
+            [
+                "name" => "Assignees",
+                "value" => $fields['branch'],
+                "inline" => false
+            ]
+        ];
+    }
+
+    function getCommentFields($fields) {
+        return [
+            [
+                "name" => "Status",
+                "value" => $fields['status'],
+                "inline" => false
+            ],
+            [
+                "name" => "Activity type",
+                "value" => $fields['type'],
+                "inline" => false
+            ],
+            [
+                "name" => "Author",
+                "value" => $fields['author'],
+                "inline" => false
+            ],
+            [
+                "name" => "Issue title",
+                "value" => $fields['commit'],
+                "inline" => false
+            ],
+            [
+                "name" => "Message",
+                "value" => $fields['message'],
+                "inline" => false
+            ],
+            [
+                "name" => "Labels",
+                "value" => $fields['project'],
+                "inline" => false
+            ],
+            [
+                "name" => "Assignees",
+                "value" => $fields['branch'],
+                "inline" => false
             ]
         ];
     }
